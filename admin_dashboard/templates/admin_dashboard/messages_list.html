@@ -1,0 +1,183 @@
+{% extends 'admin_dashboard/base.html' %}
+
+{% block title %}Contact Messages{% endblock %}
+
+{% block page_title %}Contact Messages{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4>Contact Messages</h4>
+    <div>
+        <a href="?mark_read=all" class="btn btn-outline-primary btn-sm me-2">
+            <i class="fas fa-envelope-open me-2"></i>Mark All as Read
+        </a>
+        <a href="{% url 'admin_dashboard:messages_list' %}" class="btn btn-outline-secondary btn-sm">
+            <i class="fas fa-sync me-2"></i>Refresh
+        </a>
+    </div>
+</div>
+
+<!-- Messages Table -->
+<div class="card">
+    <div class="card-body">
+        {% if page_obj %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Status</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Subject</th>
+                            <th>Message</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for message in page_obj %}
+                        <tr>
+                            <td>
+                                {% if message.is_read %}
+                                    <span class="badge bg-success">Read</span>
+                                {% else %}
+                                    <span class="badge bg-warning">Unread</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ message.name }}</td>
+                            <td>{{ message.email }}</td>
+                            <td>{{ message.subject }}</td>
+                            <td>{{ message.message|truncatewords:10 }}</td>
+                            <td>{{ message.created_at|date:"M d, Y H:i" }}</td>
+                            <td>
+                                <a href="{% url 'admin_dashboard:message_detail' message.id %}" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="{% url 'admin_dashboard:message_delete' message.id %}" class="btn btn-sm btn-outline-danger">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                                {% if not message.is_read %}
+                                    <a href="?mark_read={{ message.id }}" class="btn btn-sm btn-outline-success">
+                                        <i class="fas fa-envelope-open"></i>
+                                    </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" class="text-center text-muted">No messages found</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Pagination -->
+            {% if page_obj.has_other_pages %}
+                <nav aria-label="Messages pagination">
+                    <ul class="pagination justify-content-center">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+                                    <i class="fas fa-chevron-left"></i>
+                                </a>
+                            </li>
+                        {% endif %}
+                        
+                        {% for num in page_obj.paginator.page_range %}
+                            {% if page_obj.number == num %}
+                                <li class="page-item active">
+                                    <span class="page-link">{{ num }}</span>
+                                </li>
+                            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                        
+                        {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            {% endif %}
+        {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-envelope fa-3x text-muted mb-3"></i>
+                <h5 class="text-muted">No messages found</h5>
+                <p class="text-muted">You haven't received any contact messages yet.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Message Statistics -->
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card stats-card bg-primary text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="card-title">{{ page_obj.paginator.count }}</h4>
+                        <p class="card-text">Total Messages</p>
+                    </div>
+                    <div class="stats-icon">
+                        <i class="fas fa-envelope fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card stats-card bg-success text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="card-title">
+                            {% for message in page_obj %}
+                                {% if not message.is_read %}
+                                    {{ message.id }}
+                                    {% if not forloop.last %}+{% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </h4>
+                        <p class="card-text">Unread Messages</p>
+                    </div>
+                    <div class="stats-icon">
+                        <i class="fas fa-envelope-open-text fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card stats-card bg-info text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="card-title">
+                            {% for message in page_obj %}
+                                {% if message.is_read %}
+                                    {{ message.id }}
+                                    {% if not forloop.last %}+{% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </h4>
+                        <p class="card-text">Read Messages</p>
+                    </div>
+                    <div class="stats-icon">
+                        <i class="fas fa-envelope-open fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

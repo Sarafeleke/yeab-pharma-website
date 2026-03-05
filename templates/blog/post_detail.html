@@ -1,0 +1,234 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }} - Blog - Yeab Pharmaceuticals One Member PLC{% endblock %}
+
+{% block meta_description %}{{ post.meta_description|default:post.excerpt }}{% endblock %}
+
+{% block meta_keywords %}{{ post.meta_keywords|default:"pharmaceutical, medical, healthcare" }}{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header bg-primary text-white py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10">
+                <nav aria-label="breadcrumb" data-aos="fade-up">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'core:home' %}" class="text-white">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'blog:blog_list' %}" class="text-white">Blog</a></li>
+                        <li class="breadcrumb-item active text-white">{{ post.title }}</li>
+                    </ol>
+                </nav>
+                <h1 class="display-4 fw-bold mb-3" data-aos="fade-up" data-aos-delay="100">{{ post.title }}</h1>
+                <div class="blog-meta-header" data-aos="fade-up" data-aos-delay="200">
+                    <span class="blog-date">
+                        <i class="far fa-calendar me-1"></i>
+                        {{ post.created_at|date:"F d, Y" }}
+                    </span>
+                    <span class="blog-author">
+                        <i class="far fa-user me-1"></i>
+                        {{ post.author.get_full_name|default:post.author.username }}
+                    </span>
+                    <span class="blog-reading-time">
+                        <i class="far fa-clock me-1"></i>
+                        {{ post.reading_time }} min read
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Blog Post Content -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <!-- Main Content -->
+            <div class="col-lg-8">
+                <article class="blog-post-detail" data-aos="fade-up">
+                    {% if post.featured_image %}
+                        <div class="blog-post-image mb-4">
+                            <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="img-fluid rounded-3">
+                        </div>
+                    {% endif %}
+                    
+                    {% if post.categories.all %}
+                        <div class="blog-categories mb-4">
+                            {% for category in post.categories.all %}
+                                <a href="{% url 'blog:blog_list' %}?category={{ category.slug }}" class="category-tag">
+                                    {{ category.name }}
+                                </a>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    
+                    <div class="blog-post-content">
+                        {{ post.content|linebreaks }}
+                    </div>
+                    
+                    <!-- Share Section -->
+                    <div class="blog-share-section mt-5">
+                        <h4>Share this post</h4>
+                        <div class="social-share-buttons">
+                            <a href="#" class="share-btn facebook" data-share="facebook">
+                                <i class="fab fa-facebook-f"></i> Facebook
+                            </a>
+                            <a href="#" class="share-btn twitter" data-share="twitter">
+                                <i class="fab fa-twitter"></i> Twitter
+                            </a>
+                            <a href="#" class="share-btn linkedin" data-share="linkedin">
+                                <i class="fab fa-linkedin-in"></i> LinkedIn
+                            </a>
+                            <a href="#" class="share-btn whatsapp" data-share="whatsapp">
+                                <i class="fab fa-whatsapp"></i> WhatsApp
+                            </a>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Related Posts -->
+                {% if related_posts %}
+                    <section class="related-posts mt-5">
+                        <h3 class="mb-4">Related Posts</h3>
+                        <div class="row g-4">
+                            {% for related_post in related_posts %}
+                                <div class="col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter0 }}00">
+                                    <div class="related-post-card">
+                                        {% if related_post.featured_image %}
+                                            <div class="related-post-image">
+                                                <img src="{{ related_post.featured_image.url }}" alt="{{ related_post.title }}" class="img-fluid">
+                                            </div>
+                                        {% endif %}
+                                        <div class="related-post-content">
+                                            <h6>
+                                                <a href="{{ related_post.get_absolute_url }}">{{ related_post.title }}</a>
+                                            </h6>
+                                            <small class="text-muted">{{ related_post.created_at|date:"M d, Y" }}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </section>
+                {% endif %}
+            </div>
+            
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <!-- Author Info -->
+                <div class="sidebar-widget" data-aos="fade-left">
+                    <h4 class="widget-title">About the Author</h4>
+                    <div class="author-info">
+                        <div class="author-avatar">
+                            <i class="fas fa-user-circle fa-3x text-primary"></i>
+                        </div>
+                        <h5>{{ post.author.get_full_name|default:post.author.username }}</h5>
+                        <p class="text-muted">
+                            Healthcare industry professional with expertise in pharmaceuticals and medical equipment supply.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Categories -->
+                <div class="sidebar-widget" data-aos="fade-left" data-aos-delay="100">
+                    <h4 class="widget-title">Categories</h4>
+                    {% if post.categories.all %}
+                        <ul class="category-list">
+                            {% for category in post.categories.all %}
+                                <li>
+                                    <a href="{% url 'blog:blog_list' %}?category={{ category.slug }}" class="category-link">
+                                        {{ category.name }}
+                                        <span class="category-count">({{ category.posts.count }})</span>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+                
+                <!-- Recent Posts -->
+                <div class="sidebar-widget" data-aos="fade-left" data-aos-delay="200">
+                    <h4 class="widget-title">Recent Posts</h4>
+                    <div class="recent-posts">
+                        {% for recent_post in related_posts|slice:":5" %}
+                            <div class="recent-post-item">
+                                {% if recent_post.featured_image %}
+                                    <div class="recent-post-image">
+                                        <img src="{{ recent_post.featured_image.url }}" alt="{{ recent_post.title }}" class="img-fluid">
+                                    </div>
+                                {% endif %}
+                                <div class="recent-post-content">
+                                    <h6>
+                                        <a href="{{ recent_post.get_absolute_url }}">{{ recent_post.title|truncatechars:50 }}</a>
+                                    </h6>
+                                    <small class="text-muted">{{ recent_post.created_at|date:"M d, Y" }}</small>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <!-- CTA -->
+                <div class="sidebar-widget cta-widget" data-aos="fade-left" data-aos-delay="300">
+                    <div class="cta-content">
+                        <h4>Need Our Services?</h4>
+                        <p class="text-muted">Get in touch with our team for all your pharmaceutical and medical equipment needs.</p>
+                        <a href="{% url 'core:contact' %}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-phone me-1"></i>Contact Us
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Back to Blog -->
+<section class="py-4 bg-light">
+    <div class="container">
+        <div class="text-center">
+            <a href="{% url 'blog:blog_list' %}" class="btn btn-outline-primary">
+                <i class="fas fa-arrow-left me-2"></i>Back to Blog
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Social sharing functionality
+    const shareButtons = document.querySelectorAll('.share-btn');
+    const postUrl = window.location.href;
+    const postTitle = document.querySelector('h1').textContent;
+    
+    shareButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const platform = this.dataset.share;
+            let shareUrl = '';
+            
+            switch(platform) {
+                case 'facebook':
+                    shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(postUrl)}`;
+                    break;
+                case 'twitter':
+                    shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(postUrl)}&text=${encodeURIComponent(postTitle)}`;
+                    break;
+                case 'linkedin':
+                    shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(postUrl)}`;
+                    break;
+                case 'whatsapp':
+                    shareUrl = `https://wa.me/?text=${encodeURIComponent(postTitle + ' ' + postUrl)}`;
+                    break;
+            }
+            
+            if (shareUrl) {
+                window.open(shareUrl, '_blank', 'width=600,height=400');
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

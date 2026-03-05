@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ product.name }} - Yeab Pharmaceuticals One Member PLC{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header products-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="page-header-content text-center" data-aos="fade-up">
+                    <h1 class="display-4 fw-bold text-white mb-4">{{ product.name }}</h1>
+                    <p class="lead text-white-50">Product Details</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Product Detail Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 mb-4" data-aos="fade-right">
+                <div class="product-detail-image">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid rounded-3 shadow">
+                    {% else %}
+                        <img src="{% static 'images/med2.jpg' %}" alt="{{ product.name }}" class="img-fluid rounded-3 shadow">
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-6 mb-4" data-aos="fade-left">
+                <div class="product-detail-content">
+                    <h2 class="mb-4">{{ product.name }}</h2>
+                    <div class="product-description mb-4">
+                        <p class="lead">{{ product.description|linebreaks }}</p>
+                    </div>
+                    
+                    <div class="product-meta mb-4">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="mb-2">
+                                    <strong>Added on:</strong> {{ product.created_at|date:"F d, Y" }}
+                                </p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="mb-2">
+                                    <strong>Last updated:</strong> {{ product.updated_at|date:"F d, Y" }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="product-actions">
+                        <a href="{% url 'core:products' %}" class="btn btn-outline-primary me-3">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Products
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Related Products Section -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <h3 class="mb-4" data-aos="fade-up">Other Products</h3>
+                <div class="text-center">
+                    <a href="{% url 'core:products' %}" class="btn btn-outline-secondary">
+                        <i class="fas fa-th me-2"></i>View All Products
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

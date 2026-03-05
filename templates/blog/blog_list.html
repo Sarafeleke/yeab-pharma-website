@@ -1,0 +1,321 @@
+{% extends 'base.html' %}
+
+{% block title %}Blog - Yeab Pharmaceuticals One Member PLC{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header bg-primary text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <h1 class="display-4 fw-bold mb-3" data-aos="fade-up">Our Blog</h1>
+                <p class="lead" data-aos="fade-up" data-aos-delay="100">
+                    Stay updated with the latest news, insights, and developments in the pharmaceutical industry
+                </p>
+                <div class="blog-stats" data-aos="fade-up" data-aos-delay="200">
+                    <span class="badge bg-white text-primary">
+                        <i class="fas fa-blog me-1"></i>{{ page_obj.paginator.count }} Posts
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Blog Content -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <!-- Blog Posts -->
+            <div class="col-lg-8">
+                {% if page_obj %}
+                    <div class="blog-posts">
+                        {% for post in page_obj %}
+                            <article class="blog-post-card" data-aos="fade-up" data-aos-delay="{{ forloop.counter0 }}50">
+                                {% if post.featured_image %}
+                                    <div class="blog-post-image">
+                                        <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="img-fluid">
+                                        <div class="post-overlay">
+                                            <div class="post-date-overlay">
+                                                <i class="far fa-calendar me-1"></i>
+                                                {{ post.created_at|date:"M d" }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                <div class="blog-post-content">
+                                    <div class="blog-meta">
+                                        <span class="blog-date">
+                                            <i class="far fa-calendar me-1"></i>
+                                            {{ post.created_at|date:"F d, Y" }}
+                                        </span>
+                                        <span class="blog-author">
+                                            <i class="far fa-user me-1"></i>
+                                            {{ post.author.get_full_name|default:post.author.username }}
+                                        </span>
+                                        <span class="blog-reading-time">
+                                            <i class="far fa-clock me-1"></i>
+                                            {{ post.reading_time }} min read
+                                        </span>
+                                        {% if post.is_published %}
+                                            <span class="blog-status">
+                                                <i class="fas fa-check-circle me-1"></i>
+                                                Published
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                    <h2 class="blog-post-title">
+                                        <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                                    </h2>
+                                    <div class="blog-post-excerpt">
+                                        <p class="text-muted">{{ post.excerpt|truncatewords:30 }}</p>
+                                    </div>
+                                    <div class="blog-post-footer">
+                                        <a href="{{ post.get_absolute_url }}" class="btn btn-primary">
+                                            Read More <i class="fas fa-arrow-right ms-1"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </article>
+                        {% endfor %}
+                    </div>
+                    
+                    <!-- Enhanced Pagination -->
+                    {% if page_obj.has_other_pages %}
+                        <nav aria-label="Blog pagination" class="mt-5" data-aos="fade-up">
+                            <div class="pagination-wrapper">
+                                <ul class="pagination justify-content-center">
+                                    {% if page_obj.has_previous %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}">
+                                                <i class="fas fa-chevron-left"></i>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    
+                                    {% for num in page_obj.paginator.page_range %}
+                                        {% if page_obj.number == num %}
+                                            <li class="page-item active">
+                                                <span class="page-link">{{ num }}</span>
+                                            </li>
+                                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page={{ num }}{% if search_query %}&search={{ search_query }}{% endif %}">{{ num }}</a>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    
+                                    {% if page_obj.has_next %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}">
+                                                <i class="fas fa-chevron-right"></i>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </nav>
+                    {% endif %}
+                {% else %}
+                    <div class="text-center py-5" data-aos="fade-up">
+                        <div class="empty-state">
+                            <i class="fas fa-search fa-4x text-muted mb-4"></i>
+                            <h3 class="text-dark mb-3">No blog posts found</h3>
+                            <p class="text-muted mb-4">
+                                {% if search_query %}
+                                    No posts found matching your search for "{{ search_query }}".
+                                {% else %}
+                                    No blog posts available yet. Check back soon for the latest pharmaceutical insights!
+                                {% endif %}
+                            </p>
+                            {% if search_query %}
+                                <a href="?search=" class="btn btn-primary me-2">
+                                    <i class="fas fa-times me-1"></i>Clear Search
+                                </a>
+                            {% endif %}
+                            <a href="/" class="btn btn-outline-primary">
+                                <i class="fas fa-home me-1"></i>Back to Home
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+            
+            <!-- Enhanced Sidebar -->
+            <div class="col-lg-4">
+                <!-- Search -->
+                <div class="sidebar-widget" data-aos="fade-left">
+                    <h4 class="widget-title">
+                        <i class="fas fa-search me-2"></i>Search Posts
+                    </h4>
+                    <form method="get" class="search-form">
+                        <div class="input-group">
+                            <input type="text" name="search" class="form-control" placeholder="Search posts..." value="{{ search_query }}">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        {% if search_query %}
+                            <small class="text-muted d-block mt-2">
+                                Searching for: "{{ search_query }}"
+                            </small>
+                        {% endif %}
+                    </form>
+                </div>
+                
+                <!-- Recent Posts -->
+                <div class="sidebar-widget" data-aos="fade-left" data-aos-delay="200">
+                    <h4 class="widget-title">
+                        <i class="fas fa-clock me-2"></i>Recent Posts
+                    </h4>
+                    {% if page_obj %}
+                        <div class="recent-posts">
+                            {% for post in page_obj|slice:":5" %}
+                                <div class="recent-post-item">
+                                    {% if post.featured_image %}
+                                        <div class="recent-post-image">
+                                            <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="img-fluid">
+                                        </div>
+                                    {% endif %}
+                                    <div class="recent-post-content">
+                                        <h6>
+                                            <a href="{{ post.get_absolute_url }}">{{ post.title|truncatechars:50 }}</a>
+                                        </h6>
+                                        <div class="recent-post-meta">
+                                            <small class="text-muted">
+                                                <i class="far fa-calendar me-1"></i>
+                                                {{ post.created_at|date:"M d, Y" }}
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-3">
+                            <i class="fas fa-newspaper fa-2x text-muted mb-2"></i>
+                            <p class="text-muted">No recent posts available.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // AOS initialization
+    AOS.init({
+        duration: 1000,
+        once: true,
+        offset: 100,
+        easing: 'ease-in-out'
+    });
+    
+    // Search form enhancement
+    const searchInput = document.querySelector('.search-form input');
+    if (searchInput) {
+        searchInput.addEventListener('focus', function() {
+            this.parentElement.classList.add('search-focused');
+        });
+        
+        searchInput.addEventListener('blur', function() {
+            this.parentElement.classList.remove('search-focused');
+        });
+    }
+});
+</script>
+
+<style>
+.post-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.7) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.blog-post-card:hover .post-overlay {
+    opacity: 1;
+}
+
+.post-date-overlay {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.blog-post-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.post-interactions {
+    display: flex;
+    gap: 1rem;
+}
+
+.interaction-item {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+}
+
+.pagination-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.empty-state {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.search-focused .form-control {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(26, 77, 46, 0.25);
+}
+
+.blog-stats {
+    margin-top: 1rem;
+}
+
+.blog-stats .badge {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+}
+
+.recent-post-meta {
+    margin-top: 0.25rem;
+}
+
+@media (max-width: 768px) {
+    .blog-post-footer {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+    
+    .blog-stats .badge {
+        display: block;
+        margin-bottom: 0.5rem;
+        width: fit-content;
+    }
+}
+</style>
+{% endblock %}

@@ -1,0 +1,144 @@
+{% extends 'admin_dashboard/base.html' %}
+
+{% block title %}{% if category %}Edit Category{% else %}Create Category{% endblock %}{% endblock %}
+
+{% block page_title %}{% if category %}Edit Category{% else %}Create Category{% endblock %}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    {% if category %}Edit Category{% else %}Create New Category{% endif %}
+                </h5>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Category Name *</label>
+                        <input type="text" class="form-control" id="name" name="name" 
+                               value="{% if category %}{{ category.name }}{% endif %}" required>
+                        <small class="form-text text-muted">The name that will be displayed on the website</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="slug" class="form-label">URL Slug</label>
+                        <input type="text" class="form-control" id="slug" name="slug" 
+                               value="{% if category %}{{ category.slug }}{% endif %}">
+                        <small class="form-text text-muted">
+                            URL-friendly version of the name (auto-generated if left blank)
+                        </small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="4">{% if category %}{{ category.description }}{% endif %}</textarea>
+                        <small class="form-text text-muted">Brief description of the category (optional)</small>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'admin_dashboard:categories_list' %}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Categories
+                        </a>
+                        <div>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-save me-2"></i>
+                                {% if category %}Update Category{% else %}Create Category{% endif %}
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="card-title mb-0">Quick Tips</h6>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <i class="fas fa-lightbulb text-warning me-2"></i>
+                        Choose a descriptive name that clearly indicates the type of content
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-lightbulb text-warning me-2"></i>
+                        The slug will be used in URLs, so keep it short and readable
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-lightbulb text-warning me-2"></i>
+                        Use lowercase letters and hyphens in slugs (e.g., "healthcare-tips")
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-lightbulb text-warning me-2"></i>
+                        A good description helps users understand what content to expect
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        {% if category %}
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h6 class="card-title mb-0">Category Information</h6>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">Created:</dt>
+                        <dd class="col-sm-8">{{ category.created_at|date:"M d, Y H:i" }}</dd>
+                        
+                        <dt class="col-sm-4">Posts:</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-primary">{{ category.posts.count }}</span>
+                        </dd>
+                        
+                        <dt class="col-sm-4">Slug:</dt>
+                        <dd class="col-sm-8">
+                            <code class="text-muted">{{ category.slug }}</code>
+                        </dd>
+                    </dl>
+                    
+                    {% if category.posts.count > 0 %}
+                        <div class="mt-3">
+                            <h6>Recent Posts in this Category:</h6>
+                            <ul class="list-unstyled">
+                                {% for post in category.posts.all|slice:":5" %}
+                                    <li class="mb-2">
+                                        <a href="{% url 'admin_dashboard:post_edit' post.id %}" class="text-decoration-none small">
+                                            {{ post.title|truncatechars:40 }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const nameInput = document.getElementById('name');
+    const slugInput = document.getElementById('slug');
+    
+    // Auto-generate slug from name
+    nameInput.addEventListener('input', function() {
+        if (!slugInput.value) {
+            const slug = this.value.toLowerCase()
+                .replace(/[^a-z0-9\s-]/g, '') // Remove special characters
+                .replace(/\s+/g, '-') // Replace spaces with hyphens
+                .replace(/-+/g, '-') // Replace multiple hyphens with single
+                .trim();
+            slugInput.value = slug;
+        }
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,136 @@
+{% extends 'admin_dashboard/base.html' %}
+
+{% block title %}Delete Category{% endblock %}
+
+{% block page_title %}Delete Category{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Delete Category
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if category.posts.count > 0 %}
+                    <div class="alert alert-danger">
+                        <h6><i class="fas fa-exclamation-triangle me-2"></i>Cannot Delete!</h6>
+                        <p class="mb-0">
+                            This category contains <strong>{{ category.posts.count }}</strong> post(s). 
+                            You must either delete these posts or move them to other categories before deleting this category.
+                        </p>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h6>Posts in this category:</h6>
+                        <ul class="list-group">
+                            {% for post in category.posts.all %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <a href="{% url 'admin_dashboard:post_edit' post.id %}" class="text-decoration-none">
+                                        {{ post.title }}
+                                    </a>
+                                    <span class="badge bg-{% if post.is_published %}success{% else %}secondary{% endif %}">
+                                        {% if post.is_published %}Published{% else %}Draft{% endif %}
+                                    </span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% else %}
+                    <div class="alert alert-warning">
+                        <h6><i class="fas fa-exclamation-triangle me-2"></i>Warning!</h6>
+                        <p class="mb-0">You are about to delete the category "<strong>{{ category.name }}</strong>". This action cannot be undone.</p>
+                    </div>
+                    
+                    <div class="category-preview mb-4">
+                        <h6>{{ category.name }}</h6>
+                        <p class="text-muted">{{ category.description|default:"No description available" }}</p>
+                        <small class="text-muted">
+                            Slug: <code>{{ category.slug }}</code> | 
+                            Created: {{ category.created_at|date:"M d, Y H:i" }}
+                        </small>
+                    </div>
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'admin_dashboard:categories_list' %}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-trash me-2"></i>Delete Category
+                            </button>
+                        </div>
+                    </form>
+                {% endif %}
+                
+                <div class="mt-3">
+                    <a href="{% url 'admin_dashboard:categories_list' %}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Categories
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="card-title mb-0">Category Information</h6>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">Name:</dt>
+                    <dd class="col-sm-8">{{ category.name }}</dd>
+                    
+                    <dt class="col-sm-4">Slug:</dt>
+                    <dd class="col-sm-8">
+                        <code class="text-muted">{{ category.slug }}</code>
+                    </dd>
+                    
+                    <dt class="col-sm-4">Posts:</dt>
+                    <dd class="col-sm-8">
+                        <span class="badge bg-{{ category.posts.count|yesno:'danger,primary' }}">
+                            {{ category.posts.count }}
+                        </span>
+                    </dd>
+                    
+                    <dt class="col-sm-4">Created:</dt>
+                    <dd class="col-sm-8">{{ category.created_at|date:"M d, Y H:i" }}</dd>
+                    
+                    {% if category.description %}
+                        <dt class="col-sm-4">Description:</dt>
+                        <dd class="col-sm-8 text-muted">{{ category.description|truncatechars:100 }}</dd>
+                    {% endif %}
+                </dl>
+            </div>
+        </div>
+        
+        {% if category.posts.count == 0 %}
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h6 class="card-title mb-0">Deletion Consequences</h6>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Category will be permanently deleted
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            No posts will be affected
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            This action cannot be undone
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

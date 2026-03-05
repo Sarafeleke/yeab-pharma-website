@@ -1,0 +1,240 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Services - Yeab Pharmaceuticals One Member PLC{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header bg-primary text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <h1 class="display-4 fw-bold mb-3" data-aos="fade-up">Our Services</h1>
+                <p class="lead" data-aos="fade-up" data-aos-delay="100">
+                    Comprehensive healthcare solutions tailored to meet your needs
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Overview -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="display-5 fw-bold mb-3">What We Offer</h2>
+            <p class="lead text-muted">
+                Professional pharmaceutical and medical equipment services designed to support healthcare excellence
+            </p>
+        </div>
+        
+        <div class="row g-4">
+            {% for service in services|slice:":3" %}
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter0 }}00">
+                    <div class="service-detail-card">
+                        <div class="service-header">
+                            <div class="service-icon-large">
+                                <i class="{{ service.icon }}"></i>
+                            </div>
+                            <h3 class="service-title">{{ service.title }}</h3>
+                        </div>
+                        <p class="service-description">{{ service.description }}</p>
+                        <div class="service-features">
+                            <h5 class="features-title">Key Features:</h5>
+                            <ul class="features-list">
+                                {% for feature in service.features %}
+                                    <li>
+                                        <i class="fas fa-check-circle text-success me-2"></i>
+                                        {{ feature }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Service Process -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="display-5 fw-bold mb-3">How We Work</h2>
+            <p class="lead text-muted">Our streamlined process ensures quality service delivery</p>
+        </div>
+        
+        <div class="process-steps">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 mb-4" data-aos="fade-up">
+                    <div class="process-step">
+                        <div class="step-number">1</div>
+                        <div class="step-icon">
+                            <i class="fas fa-clipboard-list"></i>
+                        </div>
+                        <h4>Consultation</h4>
+                        <p class="text-muted">We understand your requirements and assess your healthcare facility needs.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="process-step">
+                        <div class="step-number">2</div>
+                        <div class="step-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h4>Sourcing</h4>
+                        <p class="text-muted">We source high-quality products from reputable manufacturers worldwide.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="process-step">
+                        <div class="step-number">3</div>
+                        <div class="step-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h4>Quality Assurance</h4>
+                        <p class="text-muted">All products undergo rigorous quality checks and regulatory compliance.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="process-step">
+                        <div class="step-number">4</div>
+                        <div class="step-icon">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                        <h4>Delivery</h4>
+                        <p class="text-muted">Timely and secure delivery to your healthcare facility with full support.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Product Categories -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="display-5 fw-bold mb-3">Product Categories</h2>
+            <p class="lead text-muted">Wide range of pharmaceutical and medical products</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-tablets"></i>
+                    </div>
+                    <h4>General Medicines</h4>
+                    <p class="text-muted">Essential medications for common health conditions and treatments.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-syringe"></i>
+                    </div>
+                    <h4>Vaccines & Injectables</h4>
+                    <p class="text-muted">Quality vaccines and injectable medications with proper cold chain management.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h4>Cardiovascular Drugs</h4>
+                    <p class="text-muted">Specialized medications for cardiovascular conditions and heart health.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-x-ray"></i>
+                    </div>
+                    <h4>Diagnostic Equipment</h4>
+                    <p class="text-muted">Advanced diagnostic and imaging equipment for accurate medical assessments.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="500">
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-procedures"></i>
+                    </div>
+                    <h4>Surgical Instruments</h4>
+                    <p class="text-muted">High-quality surgical instruments and medical supplies for procedures.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="600">
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-lungs"></i>
+                    </div>
+                    <h4>Respiratory Equipment</h4>
+                    <p class="text-muted">Ventilators, oxygen concentrators, and respiratory care devices.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Quality Assurance -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6" data-aos="fade-right">
+                <div class="quality-content">
+                    <h2 class="display-5 fw-bold mb-4">Quality Assurance</h2>
+                    <p class="lead text-muted mb-4">
+                        We are committed to maintaining the highest standards of quality in all our products and services.
+                    </p>
+                    <div class="quality-features">
+                        <div class="quality-item">
+                            <div class="quality-icon">
+                                <i class="fas fa-certificate"></i>
+                            </div>
+                            <div class="quality-text">
+                                <h5>International Standards</h5>
+                                <p class="text-muted">All products meet WHO and international quality standards.</p>
+                            </div>
+                        </div>
+                        <div class="quality-item">
+                            <div class="quality-icon">
+                                <i class="fas fa-file-contract"></i>
+                            </div>
+                            <div class="quality-text">
+                                <h5>Regulatory Compliance</h5>
+                                <p class="text-muted">Full compliance with local and international regulatory requirements.</p>
+                            </div>
+                        </div>
+                        <div class="quality-item">
+                            <div class="quality-icon">
+                                <i class="fas fa-temperature-low"></i>
+                            </div>
+                            <div class="quality-text">
+                                <h5>Cold Chain Management</h5>
+                                <p class="text-muted">Proper temperature control for sensitive pharmaceutical products.</p>
+                            </div>
+                        </div>
+                        <div class="quality-item">
+                            <div class="quality-icon">
+                                <i class="fas fa-clipboard-check"></i>
+                            </div>
+                            <div class="quality-text">
+                                <h5>Documentation</h5>
+                                <p class="text-muted">Complete documentation and traceability for all products.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6" data-aos="fade-left">
+                <div class="quality-image">
+                    <img src="{% static 'images/med2.jpg' %}" alt="Quality Assurance" class="img-fluid rounded-3 shadow">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

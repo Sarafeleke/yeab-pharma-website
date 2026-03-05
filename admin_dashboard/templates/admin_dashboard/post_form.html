@@ -1,0 +1,149 @@
+{% extends 'admin_dashboard/base.html' %}
+
+{% block title %}{% if post %}Edit Post{% else %}Create Post{% endif %}{% endblock %}
+
+{% block page_title %}{% if post %}Edit Post{% else %}Create Post{% endif %}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    {% if post %}Edit Post{% else %}Create New Post{% endif %}
+                </h5>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Title *</label>
+                        <input type="text" class="form-control" id="title" name="title" 
+                               value="{% if post %}{{ post.title }}{% endif %}" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="excerpt" class="form-label">Excerpt</label>
+                        <textarea class="form-control" id="excerpt" name="excerpt" rows="3">{% if post %}{{ post.excerpt }}{% endif %}</textarea>
+                        <small class="form-text text-muted">Brief description of the post (optional)</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="content" class="form-label">Content *</label>
+                        <textarea class="form-control" id="content" name="content" rows="15" required>{% if post %}{{ post.content }}{% endif %}</textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="featured_image" class="form-label">Featured Image</label>
+                        <input type="file" class="form-control" id="featured_image" name="featured_image" accept="image/*">
+                        {% if post and post.featured_image %}
+                            <div class="mt-2">
+                                <small class="form-text text-muted">Current image:</small>
+                                <img src="{{ post.featured_image.url }}" alt="Current featured image" class="img-thumbnail mt-1" style="max-height: 200px;">
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="status" class="form-label">Status</label>
+                        <select class="form-select" id="status" name="status">
+                            <option value="draft" {% if post and not post.is_published %}selected{% endif %}>Draft</option>
+                            <option value="published" {% if post and post.is_published %}selected{% endif %}>Published</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Categories</label>
+                        <div class="category-checkboxes">
+                            {% for category in categories %}
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="categories" 
+                                           value="{{ category.id }}" id="category_{{ category.id }}"
+                                           {% if post and category in post.categories.all %}checked{% endif %}>
+                                    <label class="form-check-label" for="category_{{ category.id }}">
+                                        {{ category.name }}
+                                    </label>
+                                </div>
+                            {% empty %}
+                                <p class="text-muted">No categories available. <a href="{% url 'admin_dashboard:category_create' %}">Create one</a></p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'admin_dashboard:posts_list' %}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Posts
+                        </a>
+                        <div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>
+                                {% if post %}Update Post{% else %}Create Post{% endif %}
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="card-title mb-0">Quick Tips</h6>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <i class="fas fa-lightbulb text-warning me-2"></i>
+                        Write a compelling title to attract readers
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-lightbulb text-warning me-2"></i>
+                        Use the excerpt to provide a brief summary
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-lightbulb text-warning me-2"></i>
+                        Format your content with paragraphs and headings
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-lightbulb text-warning me-2"></i>
+                        Add relevant categories to improve organization
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-lightbulb text-warning me-2"></i>
+                        Set status to "Published" to make it visible on the website
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        {% if post %}
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h6 class="card-title mb-0">Post Information</h6>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">Created:</dt>
+                        <dd class="col-sm-8">{{ post.created_at|date:"M d, Y H:i" }}</dd>
+                        
+                        <dt class="col-sm-4">Updated:</dt>
+                        <dd class="col-sm-8">{{ post.updated_at|date:"M d, Y H:i" }}</dd>
+                        
+                        <dt class="col-sm-4">Author:</dt>
+                        <dd class="col-sm-8">{{ post.author.username }}</dd>
+                        
+                        <dt class="col-sm-4">Status:</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-{% if post.is_published %}success{% else %}secondary{% endif %}">
+                                {% if post.is_published %}Published{% else %}Draft{% endif %}
+                            </span>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

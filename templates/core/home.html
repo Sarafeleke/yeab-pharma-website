@@ -1,0 +1,266 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home - Yeab Pharmaceuticals One Member PLC{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center min-vh-100">
+            <div class="col-lg-8">
+                <div class="hero-content" data-aos="fade-up">
+                    <h1 class="display-3 fw-bold text-white mb-4">
+                        Delivering Trusted Medical Solutions Worldwide
+                    </h1>
+                    <p class="lead text-white-50 mb-5">
+                        Your trusted partner in pharmaceutical importation and medical equipment supply. 
+                        We bring quality healthcare solutions to your doorstep with integrity and excellence.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="{% url 'core:services' %}" class="btn btn-outline-light btn-lg me-3">
+                            <i class="fas fa-arrow-right me-2"></i>Our Services
+                        </a>
+                        <a href="{% url 'core:contact' %}" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-phone me-2"></i>Contact Us
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="hero-slideshow">
+        <div class="slide active" style="background-image: url('{% static 'images/med2.jpg' %}')">
+            <div class="hero-overlay"></div>
+        </div>
+        <div class="slide" style="background-image: url('{% static 'images/med3.jpg' %}')">
+            <div class="hero-overlay"></div>
+        </div>
+        <div class="slide" style="background-image: url('{% static 'images/med4.jpg' %}')">
+            <div class="hero-overlay"></div>
+        </div>
+        <div class="slide" style="background-image: url('{% static 'images/med2.jpg' %}')">
+            <div class="hero-overlay"></div>
+        </div>
+        <div class="slide" style="background-image: url('{% static 'images/med3.jpg' %}')">
+            <div class="hero-overlay"></div>
+        </div>
+        <div class="slide" style="background-image: url('{% static 'images/med4.jpg' %}')">
+            <div class="hero-overlay"></div>
+        </div>
+        <div class="slide" style="background-image: url('{% static 'images/med2.jpg' %}')">
+            <div class="hero-overlay"></div>
+        </div>
+        <div class="slide" style="background-image: url('{% static 'images/med3.jpg' %}')">
+            <div class="hero-overlay"></div>
+        </div>
+        <div class="slide" style="background-image: url('{% static 'images/med4.jpg' %}')">
+            <div class="hero-overlay"></div>
+        </div>
+    </div>
+</section>
+
+<!-- About Preview Section -->
+<section class="py-5 bg-light about-preview-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6" data-aos="fade-right">
+                <div class="about-preview-content">
+                    <h2 class="display-5 fw-bold mb-4">About Yeab Pharmaceuticals</h2>
+                    <p class="lead text-muted mb-4">
+                        Founded with a vision to enhance healthcare accessibility, Yeab Pharmaceuticals One Member PLC 
+                        has become a leading name in pharmaceutical importation and medical equipment supply.
+                    </p>
+                    <p class="text-muted mb-4">
+                        We specialize in importing high-quality medicines and state-of-the-art medical equipment, 
+                        ensuring that healthcare facilities across the region have access to the best medical solutions available.
+                    </p>
+                    <div class="row mb-4">
+                        <div class="col-6">
+                            <div class="stat-item">
+                                <h3 class="text-success fw-bold">500+</h3>
+                                <p class="text-muted">Products Imported</p>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="stat-item">
+                                <h3 class="text-success fw-bold">50+</h3>
+                                <p class="text-muted">Partner Facilities</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="{% url 'core:about' %}" class="btn btn-primary">
+                        Learn More <i class="fas fa-arrow-right ms-2"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6" data-aos="fade-left">
+                <div class="about-preview-image">
+                    <img src="{% static 'images/yeablogo.png' %}" alt="Yeab Pharmaceuticals Logo" class="img-fluid rounded-3 shadow">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Preview Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="display-5 fw-bold mb-3">Our Services</h2>
+            <p class="lead text-muted">Comprehensive healthcare solutions tailored to your needs</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-pills"></i>
+                    </div>
+                    <h4 class="service-title">Pharmaceutical Import</h4>
+                    <p class="text-muted">Quality medicines from trusted manufacturers worldwide</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-medkit"></i>
+                    </div>
+                    <h4 class="service-title">Medical Equipment</h4>
+                    <p class="text-muted">State-of-the-art medical devices and equipment</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <h4 class="service-title">Distribution</h4>
+                    <p class="text-muted">Efficient logistics and timely delivery</p>
+                </div>
+            </div>
+            
+        </div>
+        <div class="text-center mt-5">
+            <a href="{% url 'core:services' %}" class="btn btn-primary btn-lg">
+                View All Services <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Us Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="display-5 fw-bold mb-3">Why Choose Us</h2>
+            <p class="lead text-muted">Your trusted partner in healthcare solutions</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="why-card">
+                    <div class="why-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h4>Integrity</h4>
+                    <p class="text-muted">We operate with complete transparency and ethical business practices in all our dealings.</p>
+                </div>
+            </div>
+            <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="why-card">
+                    <div class="why-icon">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <h4>Quality</h4>
+                    <p class="text-muted">All our products meet international quality standards and regulatory requirements.</p>
+                </div>
+            </div>
+            <div class="col-lg-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="why-card">
+                    <div class="why-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h4>Reliability</h4>
+                    <p class="text-muted">Timely delivery and consistent supply chain management you can count on.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Blog Preview Section -->
+<section class="py-5" id="blog-preview">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="display-5 fw-bold mb-3">Latest from Our Blog</h2>
+            <p class="lead text-muted">Stay updated with industry news and insights</p>
+        </div>
+        {% if latest_posts %}
+            <div class="row g-4">
+                {% for post in latest_posts %}
+                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:100 }}">
+                        <div class="blog-card">
+                            {% if post.featured_image %}
+                                <div class="blog-image">
+                                    <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="img-fluid">
+                                </div>
+                            {% endif %}
+                            <div class="blog-content">
+                                <div class="blog-meta">
+                                    <span class="blog-date">{{ post.created_at|date:"M d, Y" }}</span>
+                                    <span class="blog-author">by {{ post.author.get_full_name|default:post.author.username }}</span>
+                                </div>
+                                <h5 class="blog-title">{{ post.title }}</h5>
+                                <p class="blog-excerpt">{{ post.excerpt|truncatewords:20 }}</p>
+                                <a href="{{ post.get_absolute_url }}" class="btn btn-outline-primary btn-sm">
+                                    Read More <i class="fas fa-arrow-right ms-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center" data-aos="fade-up">
+                <p class="text-muted">No blog posts available yet.</p>
+            </div>
+        {% endif %}
+        <div class="text-center mt-5">
+            <a href="{% url 'blog:blog_list' %}" class="btn btn-primary btn-lg">
+                View All Posts <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Hero Slideshow
+    const slides = document.querySelectorAll('.hero-slideshow .slide');
+    let currentSlide = 0;
+    
+    function showSlide(index) {
+        slides.forEach((slide, i) => {
+            slide.classList.toggle('active', i === index);
+        });
+    }
+    
+    function nextSlide() {
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (currentSlide + 1) % slides.length;
+        showSlide(currentSlide);
+    }
+    
+    // Auto-advance slideshow every 5 seconds
+    setInterval(nextSlide, 5000);
+    
+    // AOS initialization
+    AOS.init({
+        duration: 1000,
+        once: true,
+        offset: 100,
+        easing: 'ease-in-out'
+    });
+});
+</script>
+
+{% endblock %}
