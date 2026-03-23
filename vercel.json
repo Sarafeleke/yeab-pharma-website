@@ -1,0 +1,43 @@
+{
+  "version": 2,
+  "name": "yeab-pharma-frontend",
+  "builds": [
+    {
+      "src": "static/**/*",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/static/(.*)",
+      "dest": "/static/$1"
+    },
+    {
+      "src": "/media/(.*)",
+      "dest": "https://yeab-pharma-backend.onrender.com/media/$1"
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "https://yeab-pharma-backend.onrender.com/$1"
+    },
+    {
+      "src": "/django-admin/(.*)",
+      "dest": "https://yeab-pharma-backend.onrender.com/django-admin/$1"
+    },
+    {
+      "src": "/admin/(.*)",
+      "dest": "https://yeab-pharma-backend.onrender.com/admin/$1"
+    },
+    {
+      "src": "/blog/(.*)",
+      "dest": "https://yeab-pharma-backend.onrender.com/blog/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "https://yeab-pharma-backend.onrender.com/$1"
+    }
+  ],
+  "env": {
+    "BACKEND_URL": "https://yeab-pharma-backend.onrender.com"
+  }
+}

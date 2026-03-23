@@ -1,0 +1,15 @@
+{
+  "name": "yeab-pharma-frontend",
+  "version": "1.0.0",
+  "description": "Yeab Pharmaceuticals Frontend for Vercel Deployment",
+  "scripts": {
+    "build": "echo 'Static files ready for deployment'",
+    "start": "echo 'Frontend deployed on Vercel'"
+  },
+  "devDependencies": {
+    "@vercel/static": "^3.0.0"
+  },
+  "keywords": ["pharma", "django", "vercel", "static"],
+  "author": "Yeab Pharmaceuticals",
+  "license": "Proprietary"
+}
