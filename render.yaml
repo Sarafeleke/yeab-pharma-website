@@ -4,8 +4,8 @@ services:
     name: yeab-pharma-backend
     env: python
     plan: free
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "python manage.py runserver 0.0.0.0:$PORT"
+    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput"
+    startCommand: "gunicorn yeab_pharma.wsgi:application --bind 0.0.0.0:$PORT"
     envVars:
       - key: DEBUG
         value: False
