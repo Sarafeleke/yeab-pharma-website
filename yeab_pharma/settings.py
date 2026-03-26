@@ -28,6 +28,9 @@ DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
 ALLOWED_HOSTS = ['*']  # Will be overridden by environment variable in production
 
+# Add proxy SSL header for Render
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 # CSRF Trusted Origins for browser preview and production
 CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1:8000',
@@ -194,7 +197,7 @@ if not DEBUG:
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_SECONDS = 31536000
     SECURE_REDIRECT_EXEMPT = []
-    SECURE_SSL_REDIRECT = True
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
+    SECURE_SSL_REDIRECT = False  # Fixed: Prevent redirect loop on Render
+    SESSION_COOKIE_SECURE = False  # Fixed: Prevent redirect loop on Render
+    CSRF_COOKIE_SECURE = False  # Fixed: Prevent redirect loop on Render
     X_FRAME_OPTIONS = 'DENY'
