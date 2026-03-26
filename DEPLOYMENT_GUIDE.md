@@ -56,7 +56,7 @@ Add these environment variables in Render dashboard:
 DEBUG=False
 SECRET_KEY=your-generated-secret-key
 DATABASE_URL=postgresql://username:password@host:port/database
-EMAIL_HOST=smtp.gmail.com
+EMAIL_HOST=
 EMAIL_PORT=587
 EMAIL_USE_TLS=True
 EMAIL_HOST_USER=your-email@gmail.com
