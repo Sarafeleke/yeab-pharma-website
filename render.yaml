@@ -1,5 +1,5 @@
 services:
-  # Django Backend Service
+  # Django Backend Service - Updated configuration
   - type: web
     name: yeab-pharma-backend
     env: python
