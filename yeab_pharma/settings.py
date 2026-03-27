@@ -115,29 +115,24 @@ WSGI_APPLICATION = 'yeab_pharma.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-import dj_database_url
-
-if os.environ.get('DATABASE_URL'):
-    try:
-        DATABASES = {
-            'default': dj_database_url.parse(os.environ.get('DATABASE_URL'), conn_max_age=600)
-        }
-    except Exception as e:
-        print(f"Database URL parsing error: {e}")
-        print("Falling back to SQLite")
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.sqlite3',
-                'NAME': BASE_DIR / 'db.sqlite3',
-            }
-        }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
+# Use SQLite for now to avoid database parsing issues
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
+}
+
+# Uncomment this later when database is properly configured
+# import dj_database_url
+# if os.environ.get('DATABASE_URL'):
+#     try:
+#         DATABASES = {
+#             'default': dj_database_url.parse(os.environ.get('DATABASE_URL'), conn_max_age=600)
+#         }
+#     except Exception as e:
+#         print(f"Database URL parsing error: {e}")
+#         print("Falling back to SQLite")
 
 
 # Password validation
